@@ -1,33 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:our_market_admin/core/app_colors.dart';
 
-class CustomSearchField extends StatelessWidget {
-  const CustomSearchField({
+class CustomField extends StatelessWidget {
+  const CustomField({
     super.key,
-    this.onPressed,  this.controller,
+    this.controller,
+    required this.labelText,
   });
-
-  final void Function()? onPressed;
+  final String labelText;
   final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextField(
+      cursorColor: AppColors.kBordersideColor,
       controller: controller,
       decoration: InputDecoration(
-        labelText: "Search in Market",
-        suffixIcon: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.kPrimaryColor,
-            foregroundColor: AppColors.kWhiteColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          onPressed: onPressed,
-          label: const Icon(
-            (Icons.search),
-          ),
-        ),
+        labelText: labelText,
+        labelStyle: const TextStyle(color: AppColors.kBlackColor),
         border: OutlineInputBorder(
           borderSide:
               const BorderSide(color: AppColors.kBordersideColor, width: 2),
