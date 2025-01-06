@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:our_market_admin/core/app_colors.dart';
+import 'package:our_market_admin/core/components/custom_elevated_button.dart';
 import 'package:our_market_admin/core/components/custom_text_field.dart';
 import 'package:our_market_admin/core/functions/build_custom_app_bar.dart';
 
@@ -32,10 +34,26 @@ class _LoginViewState extends State<LoginView> {
             CustomField(
               labelText: "Password",
               controller: passwordController,
+              isPassword: true,
+              onPressed: () {},
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomElevatedButton(
+              child: const Text("Login"),
+              onPressed: () {},
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }
