@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:our_market_admin/features/auth/view/login_view.dart';
+import 'package:our_market_admin/features/home/views/home_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const LoginView(),
+      home: const HomeView(),
     );
   }
 }
