@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:our_market_admin/core/components/custom_elevated_button.dart';
 import 'package:our_market_admin/core/functions/build_custom_app_bar.dart';
+import 'package:our_market_admin/core/functions/navigate_to.dart';
+import 'package:our_market_admin/features/products/view/products_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -32,7 +34,7 @@ class HomeView extends StatelessWidget {
                   Icon(Icons.shopping_bag, size: 30)
                 ],
               ),
-              onPressed: () {},
+              onPressed: () => navigateTo(context, const ProductsView()),
             ),
             CustomElevatedButton(
               width: MediaQuery.of(context).size.width * 0.3,
