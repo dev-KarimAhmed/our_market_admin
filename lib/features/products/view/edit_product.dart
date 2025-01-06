@@ -4,9 +4,21 @@ import 'package:our_market_admin/core/components/custom_elevated_button.dart';
 import 'package:our_market_admin/core/components/custom_text_field.dart';
 import 'package:our_market_admin/core/functions/build_custom_app_bar.dart';
 
-class EditProductView extends StatelessWidget {
+class EditProductView extends StatefulWidget {
   const EditProductView({super.key});
 
+  @override
+  State<EditProductView> createState() => _EditProductViewState();
+}
+
+class _EditProductViewState extends State<EditProductView> {
+  String selectedValue = "Collections";
+  String sale = "10";
+  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController _newPriceController = TextEditingController();
+  final TextEditingController _oldPriceController = TextEditingController();
+  final TextEditingController _productDescriptionController =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,17 +30,33 @@ class EditProductView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Column(
-                  // TODO : Category dropdown
+                DropdownMenu(
+                  onSelected: (String? value) {
+                    setState(() {
+                      selectedValue = value ?? "Collections";
+                    });
+                  },
+                  initialSelection: selectedValue,
+                  dropdownMenuEntries: const [
+                    DropdownMenuEntry(value: "Sports", label: "Sports"),
+                    DropdownMenuEntry(
+                        value: "Electronics", label: "Electronics"),
+                    DropdownMenuEntry(
+                        value: "Collections", label: "Collections"),
+                    DropdownMenuEntry(value: "Books", label: "Books"),
+                    DropdownMenuEntry(value: "Bikes", label: "Bikes"),
+                  ],
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Column(
                   children: [
-                    Text(
+                    const Text(
                       "Sale",
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Text(
-                      "10 %",
+                      "$sale %",
                     ),
                   ],
                 ),
@@ -67,27 +95,55 @@ class EditProductView extends StatelessWidget {
             const SizedBox(
               height: 60,
             ),
-            const CustomField(labelText: "Product Name"),
+            CustomField(
+              labelText: "Product Name",
+              controller: _productNameController,
+            ),
             const SizedBox(
               height: 10,
             ),
-            const CustomField(labelText: "New Price"), // 70
+            CustomField(
+              labelText: "New Price",
+              controller: _newPriceController,
+            ), // 70
             const SizedBox(
               height: 10,
             ),
-            const CustomField(labelText: "Old Price"), // 249
+            CustomField(
+              labelText: "Old Price",
+              controller: _oldPriceController,
+            ), // 249
             const SizedBox(
               height: 10,
             ),
 
-            const CustomField(labelText: "Product Description"),
+            CustomField(
+              labelText: "Product Description",
+              controller: _productDescriptionController,
+            ),
             const SizedBox(
               height: 20,
             ),
-            CustomElevatedButton(child: const Text("Update"), onPressed: () {}),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: CustomElevatedButton(
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text("Update"),
+                  ),
+                  onPressed: () {}),
+            ),
           ],
         ),
       ),
     );
+  }
+ @override
+  void dispose() {
+    _productNameController.dispose();
+    _newPriceController.dispose();
+    _oldPriceController.dispose();
+    _productDescriptionController.dispose();
+    super.dispose();
   }
 }
