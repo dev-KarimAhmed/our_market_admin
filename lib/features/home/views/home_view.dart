@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:our_market_admin/core/components/custom_elevated_button.dart';
 import 'package:our_market_admin/core/functions/build_custom_app_bar.dart';
 import 'package:our_market_admin/core/functions/navigate_to.dart';
+import 'package:our_market_admin/features/add_product/views/add_product.dart';
 import 'package:our_market_admin/features/products/view/products_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -55,7 +56,7 @@ class HomeView extends StatelessWidget {
                   Icon(Icons.add_circle_outline, size: 30)
                 ],
               ),
-              onPressed: () {},
+              onPressed: () => navigateTo(context , const AddProductView()),
             ),
             CustomElevatedButton(
               width: MediaQuery.of(context).size.width * 0.3,
