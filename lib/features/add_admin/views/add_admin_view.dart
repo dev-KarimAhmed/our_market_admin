@@ -19,6 +19,7 @@ class AddAdminView extends StatefulWidget {
 class _AddAdminViewState extends State<AddAdminView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,49 +29,53 @@ class _AddAdminViewState extends State<AddAdminView> {
         child: BlocConsumer<AddAdminCubit, AddAdminState>(
           listener: (context, state) {
             if (state is AddAdminSuccess) {
-              // navigateWithoutBack(context, const LoginView());
-              print("Admin added successfully");
+              navigateWithoutBack(context, const LoginView());
             }
             if (state is AddAdminError) {
               showMsg(context, state.message);
             }
           },
           builder: (context, state) {
-            AddAdminCubit _cubit = AddAdminCubit();
+            AddAdminCubit cubit = context.read<AddAdminCubit>();
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: state is AddAdminLoading
                   ? const CustomCircleProgIndicator()
-                  : Column(
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomField(
-                          labelText: "Email",
-                          controller: _emailController,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomField(
-                          labelText: "Password",
-                          isPassword: true,
-                          controller: _passwordController,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomElevatedButton(
-                          child: const Text("Add"),
-                          onPressed: () {
-                            _cubit.createAnAccount({
-                              "email": _emailController.text,
-                              "password": _passwordController.text,
-                            });
-                          },
-                        ),
-                      ],
+                  : Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomField(
+                            labelText: "Email",
+                            controller: _emailController,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomField(
+                            labelText: "Password",
+                            isPassword: true,
+                            controller: _passwordController,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomElevatedButton(
+                            child: const Text("Add"),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                cubit.createAnAccount({
+                                  "email": _emailController.text,
+                                  "password": _passwordController.text,
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
             );
           },

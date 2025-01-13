@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:our_market_admin/core/my_observer.dart';
 import 'package:our_market_admin/features/auth/view/login_view.dart';
 import 'package:our_market_admin/features/home/views/home_view.dart';
 
 void main() {
   runApp(const MyApp());
+  Bloc.observer = MyObserver();
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const HomeView(),
+      home: const LoginView(),
     );
   }
 }
