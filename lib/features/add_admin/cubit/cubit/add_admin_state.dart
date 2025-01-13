@@ -1,6 +1,6 @@
 part of 'add_admin_cubit.dart';
 
-@immutable
+
 sealed class AddAdminState {}
 
 final class AddAdminInitial extends AddAdminState {}
