@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:our_market_admin/core/sensitive_data.dart';
 
@@ -28,16 +27,26 @@ class ApiServices {
     return await _dio.delete(path);
   }
 
-   final Dio _dioAuth = Dio(
+  final Dio _dioAuth = Dio(
     BaseOptions(
       baseUrl: "https://itjstiahcigzhbrwggfz.supabase.co/auth/v1/",
       headers: {
         "apiKey": anonKey,
       },
     ),
-   );
-    Future<Response> createAnAccount(String endpoint, Map<String, dynamic> data) async {
+  );
+  Future<Response> createAnAccount(
+      String endpoint, Map<String, dynamic> data) async {
     return await _dioAuth.post(endpoint, data: data);
   }
 
+  Future<Response> login(String endpoint, Map<String, dynamic> data) async {
+    return await _dioAuth.post(
+      endpoint,
+      data: data,
+      queryParameters: {
+        "grant_type": "password",
+      },
+    );
+  }
 }
