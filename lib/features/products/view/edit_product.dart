@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:our_market_admin/core/components/cache_image.dart';
 import 'package:our_market_admin/core/components/custom_elevated_button.dart';
 import 'package:our_market_admin/core/components/custom_text_field.dart';
@@ -16,27 +17,27 @@ class EditProductView extends StatefulWidget {
 
 class _EditProductViewState extends State<EditProductView> {
   String? selectedValue;
-  String? sale;
+  String? discount;
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _newPriceController = TextEditingController();
   final TextEditingController _oldPriceController = TextEditingController();
   final TextEditingController _productDescriptionController =
       TextEditingController();
 
-      @override
+  @override
   void initState() {
     // selectedValue = widget.product.category;
-    sale = widget.product.sale.toString();
+    discount = widget.product.sale.toString();
     _productNameController.text = widget.product.productName ?? "";
-    _newPriceController.text = widget.product.price.toString(); 
+    _newPriceController.text = widget.product.price.toString();
     _oldPriceController.text = widget.product.oldPrice.toString();
     _productDescriptionController.text = widget.product.description ?? "";
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: buildCustomAppBar(context, "Edit Product"),
       body: Padding(
@@ -69,18 +70,18 @@ class _EditProductViewState extends State<EditProductView> {
                 Column(
                   children: [
                     const Text(
-                      "Sale",
+                      "Discount",
                     ),
                     Text(
-                      "$sale %",
+                      "$discount %",
                     ),
                   ],
                 ),
                 Column(
                   children: [
-                     CaheImage(
-                      url:
-                        widget.product.imageUrl ??  "https://img.freepik.com/free-photo/sale-with-special-discount-vr-glasses_23-2150040380.jpg?t=st=1736199951~exp=1736203551~hmac=4002ca903018a0edb3f886536eb961659f89a39eb31ee90a093c352ac11e5912&w=826",
+                    CaheImage(
+                      url: widget.product.imageUrl ??
+                          "https://img.freepik.com/free-photo/sale-with-special-discount-vr-glasses_23-2150040380.jpg?t=st=1736199951~exp=1736203551~hmac=4002ca903018a0edb3f886536eb961659f89a39eb31ee90a093c352ac11e5912&w=826",
                       height: 200,
                       width: 300,
                     ),
@@ -115,24 +116,36 @@ class _EditProductViewState extends State<EditProductView> {
               labelText: "Product Name",
               controller: _productNameController,
             ),
+            // 70
             const SizedBox(
               height: 10,
             ),
             CustomField(
-              labelText: "New Price",
-              controller: _newPriceController,
-            ), // 70
-            const SizedBox(
-              height: 10,
-            ),
-            CustomField(
-              labelText: "Old Price",
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))],
+              labelText: "Old Price (Before Discount)",
               controller: _oldPriceController,
             ), // 249
             const SizedBox(
               height: 10,
             ),
 
+            CustomField(
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))],
+              labelText: "New Price (After Discount)",
+              controller: _newPriceController,
+              onChanged: (String val) {
+                double x = ((double.parse(_oldPriceController.text) -
+                        double.parse(val)) /
+                    double.parse(_oldPriceController.text) *
+                    100);
+                setState(() {
+                  discount = x.round().toString();
+                });
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             CustomField(
               labelText: "Product Description",
               controller: _productDescriptionController,
@@ -167,3 +180,8 @@ class _EditProductViewState extends State<EditProductView> {
     super.dispose();
   }
 }
+
+// sale = (double.parse(val) - double.parse(_newPriceController.text)) /
+//                       double.parse(_newPriceController.text) *
+//                       100;
+

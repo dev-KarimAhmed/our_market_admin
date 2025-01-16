@@ -21,7 +21,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const LoginView(),
+      home: const HomeView(),
     );
   }
 }
+ // admin123@gmail.com
+ // aA12345
