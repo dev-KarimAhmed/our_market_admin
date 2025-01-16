@@ -4,24 +4,39 @@ import 'package:our_market_admin/core/components/custom_elevated_button.dart';
 import 'package:our_market_admin/core/components/custom_text_field.dart';
 import 'package:our_market_admin/core/functions/build_custom_app_bar.dart';
 import 'package:our_market_admin/core/shared_pref.dart';
+import 'package:our_market_admin/features/products/models/product_model.dart';
 
 class EditProductView extends StatefulWidget {
-  const EditProductView({super.key});
+  const EditProductView({super.key, required this.product});
+  final ProductModel product;
 
   @override
   State<EditProductView> createState() => _EditProductViewState();
 }
 
 class _EditProductViewState extends State<EditProductView> {
-  String selectedValue = "Collections";
-  String sale = "10";
+  String? selectedValue;
+  String? sale;
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _newPriceController = TextEditingController();
   final TextEditingController _oldPriceController = TextEditingController();
   final TextEditingController _productDescriptionController =
       TextEditingController();
+
+      @override
+  void initState() {
+    // selectedValue = widget.product.category;
+    sale = widget.product.sale.toString();
+    _productNameController.text = widget.product.productName ?? "";
+    _newPriceController.text = widget.product.price.toString(); 
+    _oldPriceController.text = widget.product.oldPrice.toString();
+    _productDescriptionController.text = widget.product.description ?? "";
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: buildCustomAppBar(context, "Edit Product"),
       body: Padding(
@@ -37,15 +52,15 @@ class _EditProductViewState extends State<EditProductView> {
                       selectedValue = value ?? "Collections";
                     });
                   },
-                  initialSelection: selectedValue,
+                  initialSelection: widget.product.category, // "collections",
                   dropdownMenuEntries: const [
-                    DropdownMenuEntry(value: "Sports", label: "Sports"),
+                    DropdownMenuEntry(value: "sports", label: "Sports"),
                     DropdownMenuEntry(
-                        value: "Electronics", label: "Electronics"),
+                        value: "electronics", label: "Electronics"),
                     DropdownMenuEntry(
-                        value: "Collections", label: "Collections"),
-                    DropdownMenuEntry(value: "Books", label: "Books"),
-                    DropdownMenuEntry(value: "Bikes", label: "Bikes"),
+                        value: "collections", label: "Collections"),
+                    DropdownMenuEntry(value: "books", label: "Books"),
+                    DropdownMenuEntry(value: "bikes", label: "Bikes"),
                   ],
                 ),
                 const SizedBox(
@@ -63,9 +78,9 @@ class _EditProductViewState extends State<EditProductView> {
                 ),
                 Column(
                   children: [
-                    const CaheImage(
+                     CaheImage(
                       url:
-                          "https://img.freepik.com/free-photo/sale-with-special-discount-vr-glasses_23-2150040380.jpg?t=st=1736199951~exp=1736203551~hmac=4002ca903018a0edb3f886536eb961659f89a39eb31ee90a093c352ac11e5912&w=826",
+                        widget.product.imageUrl ??  "https://img.freepik.com/free-photo/sale-with-special-discount-vr-glasses_23-2150040380.jpg?t=st=1736199951~exp=1736203551~hmac=4002ca903018a0edb3f886536eb961659f89a39eb31ee90a093c352ac11e5912&w=826",
                       height: 200,
                       width: 300,
                     ),
