@@ -14,23 +14,32 @@ class ProductsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProductsCubit()..getProducts(),
-      child: BlocConsumer<ProductsCubit,  ProductsState>(
+      child: BlocConsumer<ProductsCubit, ProductsState>(
         listener: (context, state) {
-          // TODO: implement listener
         },
         builder: (context, state) {
+          ProductsCubit cubit = context.read<ProductsCubit>();
+
           return Scaffold(
             appBar: buildCustomAppBar(context, "Products"),
-            body: state is GetProductsLoading ? const CustomCircleProgIndicator() : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                itemBuilder: (context, index) => const CustomProductCard(),
-                itemCount: 10,
-              ),
-            ),
+            body: state is GetProductsLoading
+                ? const CustomCircleProgIndicator()
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) =>
+                           CustomProductCard(
+                            product: cubit.products[index],
+                           ),
+                      itemCount: cubit.products.length,
+                    ),
+                  ),
           );
         },
       ),
     );
   }
 }
+
+// admin123@gmail.com
+// aA12345

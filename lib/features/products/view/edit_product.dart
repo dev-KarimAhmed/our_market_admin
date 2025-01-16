@@ -132,7 +132,7 @@ class _EditProductViewState extends State<EditProductView> {
                     padding: EdgeInsets.all(8.0),
                     child: Text("Update"),
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     String? token = await SharedPref.getToken();
                     print("Token:====> $token");
                   }),
@@ -142,7 +142,8 @@ class _EditProductViewState extends State<EditProductView> {
       ),
     );
   }
- @override
+
+  @override
   void dispose() {
     _productNameController.dispose();
     _newPriceController.dispose();

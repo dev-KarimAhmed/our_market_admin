@@ -7,16 +7,15 @@ class ApiServices {
       baseUrl: "https://itjstiahcigzhbrwggfz.supabase.co/rest/v1/",
       headers: {
         "apiKey": anonKey,
-        
       },
     ),
   );
 
   Future<Response> getData(String path, String? token) async {
-    return await _dio.get(
-      path, options: Options(headers: {
-      "Authorization" : "Bearer $token",
-    }));
+    return await _dio.get(path,
+        options: Options(headers: {
+          "Authorization": "Bearer $token",
+        }));
   }
 
   Future<Response> postData(String path, Map<String, dynamic> data) async {

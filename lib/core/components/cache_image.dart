@@ -5,7 +5,9 @@ import 'package:our_market_admin/core/components/custom_circle_indicator.dart';
 class CaheImage extends StatelessWidget {
   const CaheImage({
     super.key,
-    required this.url, required this.height, required this.width,
+    required this.url,
+    required this.height,
+    required this.width,
   });
   final double height;
   final double width;
