@@ -4,6 +4,7 @@ import 'package:our_market_admin/core/components/cache_image.dart';
 import 'package:our_market_admin/core/components/custom_elevated_button.dart';
 import 'package:our_market_admin/core/components/custom_text_field.dart';
 import 'package:our_market_admin/core/functions/build_custom_app_bar.dart';
+import 'package:our_market_admin/core/functions/pick_image.dart';
 import 'package:our_market_admin/core/shared_pref.dart';
 import 'package:our_market_admin/features/products/models/product_model.dart';
 
@@ -36,6 +37,7 @@ class _EditProductViewState extends State<EditProductView> {
     super.initState();
   }
 
+  Uint8List? _selectedImage;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,12 +81,18 @@ class _EditProductViewState extends State<EditProductView> {
                 ),
                 Column(
                   children: [
-                    CaheImage(
-                      url: widget.product.imageUrl ??
-                          "https://img.freepik.com/free-photo/sale-with-special-discount-vr-glasses_23-2150040380.jpg?t=st=1736199951~exp=1736203551~hmac=4002ca903018a0edb3f886536eb961659f89a39eb31ee90a093c352ac11e5912&w=826",
-                      height: 200,
-                      width: 300,
-                    ),
+                    _selectedImage != null
+                        ? Image.memory(
+                            _selectedImage!,
+                            height: 200,
+                            width: 300,
+                          )
+                        : CaheImage(
+                            url: widget.product.imageUrl ??
+                                "https://img.freepik.com/free-photo/sale-with-special-discount-vr-glasses_23-2150040380.jpg?t=st=1736199951~exp=1736203551~hmac=4002ca903018a0edb3f886536eb961659f89a39eb31ee90a093c352ac11e5912&w=826",
+                            height: 200,
+                            width: 300,
+                          ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -92,7 +100,16 @@ class _EditProductViewState extends State<EditProductView> {
                       children: [
                         CustomElevatedButton(
                           child: const Icon(Icons.image),
-                          onPressed: () {},
+                          onPressed: () async {
+                            await pickImage().then((value) {
+                              if (value != null) {
+                                setState(() {
+                                  Uint8List? bytes = value.files.first.bytes;
+                                  _selectedImage = bytes;
+                                });
+                              }
+                            });
+                          },
                         ),
                         const SizedBox(
                           width: 10,
@@ -121,7 +138,9 @@ class _EditProductViewState extends State<EditProductView> {
               height: 10,
             ),
             CustomField(
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))],
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+              ],
               labelText: "Old Price (Before Discount)",
               controller: _oldPriceController,
             ), // 249
@@ -130,7 +149,9 @@ class _EditProductViewState extends State<EditProductView> {
             ),
 
             CustomField(
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))],
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+              ],
               labelText: "New Price (After Discount)",
               controller: _newPriceController,
               onChanged: (String val) {
