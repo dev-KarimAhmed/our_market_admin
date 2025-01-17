@@ -33,7 +33,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   }
 
   // upload image to supabase storage
-  String imageUrl = "";
+  String imageUrl = "https://img.freepik.com/free-photo/sale-with-special-discount-vr-glasses_23-2150040380.jpg?t=st=1736199951~exp=1736203551~hmac=4002ca903018a0edb3f886536eb961659f89a39eb31ee90a093c352ac11e5912&w=826";
   Future<void> uploadImage(
       {required Uint8List image,
       required String imageName,

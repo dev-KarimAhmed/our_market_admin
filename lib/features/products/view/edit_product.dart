@@ -32,7 +32,7 @@ class _EditProductViewState extends State<EditProductView> {
 
   @override
   void initState() {
-    // selectedValue = widget.product.category;
+    selectedValue = widget.product.category;
     discount = widget.product.sale.toString();
     _productNameController.text = widget.product.productName ?? "";
     _newPriceController.text = widget.product.price.toString();
@@ -58,90 +58,96 @@ class _EditProductViewState extends State<EditProductView> {
           ProductsCubit cubit = context.read<ProductsCubit>();
           return Scaffold(
             appBar: buildCustomAppBar(context, "Edit Product"),
-            body: state is EditProductLoading ? const CustomCircleProgIndicator() : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                children: [
-                  _buildEditProduct(state, cubit),
-                  const SizedBox(
-                    height: 60,
-                  ),
-                  CustomField(
-                    labelText: "Product Name",
-                    controller: _productNameController,
-                  ),
-                  // 70
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomField(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^(\d+)?\.?\d{0,2}'))
-                    ],
-                    labelText: "Old Price (Before Discount)",
-                    controller: _oldPriceController,
-                  ), // 249
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  CustomField(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^(\d+)?\.?\d{0,2}'))
-                    ],
-                    labelText: "New Price (After Discount)",
-                    controller: _newPriceController,
-                    onChanged: (String val) {
-                      double x = ((double.parse(_oldPriceController.text) -
-                              double.parse(val)) /
-                          double.parse(_oldPriceController.text) *
-                          100);
-                      setState(() {
-                        discount = x.round().toString();
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomField(
-                    labelText: "Product Description",
-                    controller: _productDescriptionController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: CustomElevatedButton(
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Update"),
+            body: state is EditProductLoading
+                ? const CustomCircleProgIndicator()
+                : Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView(
+                      children: [
+                        _buildEditProduct(state, cubit),
+                        const SizedBox(
+                          height: 60,
                         ),
-                        onPressed:state is UploadImageLoading
-                      ? null
-                      :  () async {
-                          cubit.editProduct(
-                              productId: widget.product.productId!,
-                              data: {
-                                "product_name": _productNameController.text,
-                                "price": _newPriceController.text,
-                                "old_price": _oldPriceController.text,
-                                "sale": discount,
-                                "description":
-                                    _productDescriptionController.text,
-                                "category": selectedValue,
-                                "image_url": cubit.imageUrl.isEmpty
-                                    ? widget.product.imageUrl
-                                    : cubit.imageUrl
-                              });
-                        }),
+                        CustomField(
+                          labelText: "Product Name",
+                          controller: _productNameController,
+                        ),
+                        // 70
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^(\d+)?\.?\d{0,2}'))
+                          ],
+                          labelText: "Old Price (Before Discount)",
+                          controller: _oldPriceController,
+                        ), // 249
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        CustomField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^(\d+)?\.?\d{0,2}'))
+                          ],
+                          labelText: "New Price (After Discount)",
+                          controller: _newPriceController,
+                          onChanged: (String val) {
+                            double x =
+                                ((double.parse(_oldPriceController.text) -
+                                        double.parse(val)) /
+                                    double.parse(_oldPriceController.text) *
+                                    100);
+                            setState(() {
+                              discount = x.round().toString();
+                            });
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomField(
+                          labelText: "Product Description",
+                          controller: _productDescriptionController,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: CustomElevatedButton(
+                            onPressed: state is UploadImageLoading
+                                ? null
+                                : () async {
+                                    cubit.editProduct(
+                                        productId: widget.product.productId!,
+                                        data: {
+                                          "product_name":
+                                              _productNameController.text,
+                                          "price": _newPriceController.text,
+                                          "old_price": _oldPriceController.text,
+                                          "sale": discount,
+                                          "description":
+                                              _productDescriptionController
+                                                  .text,
+                                          "category": selectedValue,
+                                          "image_url": cubit.imageUrl.isEmpty
+                                              ? widget.product.imageUrl
+                                              : cubit.imageUrl
+                                        });
+                                  },
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text("Update"),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
           );
         },
       ),
@@ -230,10 +236,10 @@ class _EditProductViewState extends State<EditProductView> {
     return DropdownMenu(
       onSelected: (String? value) {
         setState(() {
-          selectedValue = value ?? "Collections";
+          selectedValue = value ?? "collections";
         });
       },
-      initialSelection: widget.product.category, // "collections",
+      initialSelection: selectedValue, // "collections",
       dropdownMenuEntries: const [
         DropdownMenuEntry(value: "sports", label: "Sports"),
         DropdownMenuEntry(value: "electronics", label: "Electronics"),
