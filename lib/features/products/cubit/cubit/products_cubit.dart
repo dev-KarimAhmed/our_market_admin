@@ -31,14 +31,16 @@ class ProductsCubit extends Cubit<ProductsState> {
       emit(GetProductsError());
     }
   }
- String imageUrl = "";
+
+  // upload image to supabase storage
+  String imageUrl = "";
   Future<void> uploadImage(
       {required Uint8List image,
       required String imageName,
       required String bucketName}) async {
     emit(UploadImageLoading());
     const String _storageBaseUrl =
-        "https://itjstiahcigzhbrwggfz.supabase.co/storage/v1/object"; 
+        "https://itjstiahcigzhbrwggfz.supabase.co/storage/v1/object";
     const String apiKey = anonKey;
     final String? token = await SharedPref.getToken();
     final String uploadUrl = "$_storageBaseUrl/$bucketName/$imageName";
@@ -62,15 +64,33 @@ class ProductsCubit extends Cubit<ProductsState> {
         ),
       );
       if (response.statusCode == 200) {
-        imageUrl = "https://itjstiahcigzhbrwggfz.supabase.co/storage/v1/object/public/${response.data["Key"]}";
+        imageUrl =
+            "https://itjstiahcigzhbrwggfz.supabase.co/storage/v1/object/public/${response.data["Key"]}";
         emit(UploadImageSuccess());
       } else {
-
         emit(UploadImageError());
       }
     } catch (e) {
       print(e.toString());
       emit(UploadImageError());
+    }
+  }
+
+  // edit product
+  Future<void> editProduct(
+      {required Map<String, dynamic> data, required String productId}) async {
+    emit(EditProductLoading());
+    try {
+      String? token = await SharedPref.getToken();
+      Response response = await _apiServices.patchData(
+          "products_table?product_id=eq.$productId", data, token);
+      if (response.statusCode == 204) {
+        emit(EditProductSuccess());
+      } else {
+        emit(EditProductError());
+      }
+    } catch (e) {
+      emit(EditProductError());
     }
   }
 }
