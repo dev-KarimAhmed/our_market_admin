@@ -93,4 +93,18 @@ class ProductsCubit extends Cubit<ProductsState> {
       emit(EditProductError());
     }
   }
+
+  // delete product
+
+  Future<void> deleteProduct({required String productId}) async {
+    emit(DeleteProductLoading());
+    try {
+      String? token = await SharedPref.getToken();
+      await _apiServices.deleteData(
+          "products_table?product_id=eq.$productId", token);
+      emit(DeleteProductSuccess());
+    } catch (e) {
+      emit(DeleteProductError());
+    }
+  }
 }

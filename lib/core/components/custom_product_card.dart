@@ -9,10 +9,11 @@ import 'custom_elevated_button.dart';
 
 class CustomProductCard extends StatelessWidget {
   const CustomProductCard({
-    super.key, required this.product,
+    super.key, required this.product, this.deleteProduct,
   });
   
   final ProductModel product;
+  final void Function()? deleteProduct;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -93,7 +94,7 @@ class CustomProductCard extends StatelessWidget {
                 horizontal: 8,
               ),
               child: CustomElevatedButton(
-                onPressed: () {},
+                onPressed: deleteProduct,
                 child: const Row(
                   children: [
                     Icon(Icons.delete),

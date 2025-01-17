@@ -22,3 +22,10 @@ final class EditProductLoading extends ProductsState {}
 final class EditProductSuccess extends ProductsState {}
 
 final class EditProductError extends ProductsState {}
+
+final class DeleteProductLoading extends ProductsState {}
+
+final class DeleteProductSuccess extends ProductsState {}
+
+final class DeleteProductError extends ProductsState {}
+
