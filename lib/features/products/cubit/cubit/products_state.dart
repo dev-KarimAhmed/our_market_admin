@@ -29,3 +29,9 @@ final class DeleteProductSuccess extends ProductsState {}
 
 final class DeleteProductError extends ProductsState {}
 
+final class AddProductLoading extends ProductsState {}
+
+final class AddProductSuccess extends ProductsState {}
+
+final class AddProductError extends ProductsState {}
+

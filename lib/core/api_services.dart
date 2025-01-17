@@ -18,8 +18,10 @@ class ApiServices {
         }));
   }
 
-  Future<Response> postData(String path, Map<String, dynamic> data) async {
-    return await _dio.post(path, data: data);
+  Future<Response> postData(String path, Map<String, dynamic> data , String? token) async {
+    return await _dio.post(path, data: data, options: Options(headers: {
+          "Authorization": "Bearer $token",
+        }));
   }
 
   Future<Response> patchData(String path, Map<String, dynamic> data , String? token) async {
